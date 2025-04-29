@@ -105,22 +105,45 @@ async function fetchNews(query) {
         console.error("Error fetching news:", error);
     }
 }
-
 function bindData(articles) {
     const cardsContainer = document.getElementById("cards-container");
     const newsCardTemplate = document.getElementById("template-news-card");
 
-    // Clear previous articles
-    cardsContainer.innerHTML = "";
+    cardsContainer.innerHTML = "";  // Clear previous cards
 
-    // Loop through each article and bind it to the template
+    // Log articles to see if they are properly fetched
+    console.log("Fetched articles:", articles);
+
+    // Check if articles is an array and not empty
+    if (!Array.isArray(articles) || articles.length === 0) {
+        console.error("No valid articles found.");
+        return;  // Early exit if articles are invalid
+    }
+
     articles.forEach((article) => {
-        if (!article.urlToImage) return; // Skip articles without image
+        if (!article.urlToImage) return;  // Skip articles without images
         const cardClone = newsCardTemplate.content.cloneNode(true);
         fillDataInCard(cardClone, article);
         cardsContainer.appendChild(cardClone);
     });
 }
+
+
+// function bindData(articles) {
+//     const cardsContainer = document.getElementById("cards-container");
+//     const newsCardTemplate = document.getElementById("template-news-card");
+
+//     // Clear previous articles
+//     cardsContainer.innerHTML = "";
+
+//     // Loop through each article and bind it to the template
+//     articles.forEach((article) => {
+//         if (!article.urlToImage) return; // Skip articles without image
+//         const cardClone = newsCardTemplate.content.cloneNode(true);
+//         fillDataInCard(cardClone, article);
+//         cardsContainer.appendChild(cardClone);
+//     });
+// }
 
 function fillDataInCard(cardClone, article) {
     const newsImg = cardClone.querySelector("#news-img");
