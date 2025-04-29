@@ -68,11 +68,8 @@
 //     curSelectedNav ?.classList.remove("active");
 //     curSelectedNav = null;
 // });
-
-
 const API_KEY = "d1898be6418742adaa8f5b77c8634c08";
-const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-const url = "https://newsapi.org/v2/everything?q=";
+ const url = "https://newsapi.org/v2/everything?q=";
 
 window.addEventListener("load", () => fetchNews("India"));
 
@@ -82,15 +79,22 @@ function reload() {
 
 async function fetchNews(query) {
     try {
-        const res = await fetch(`${proxyUrl}${url}${query}&apiKey=${API_KEY}`);
+        const targetUrl = `${url}${query}&apiKey=${API_KEY}`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+
+        const res = await fetch(proxyUrl);
         if (!res.ok) {
             throw new Error(`API error: ${res.status} ${res.statusText}`);
         }
-        const data = await res.json();
+
+        const dataWrapped = await res.json();
+        const data = JSON.parse(dataWrapped.contents);
+
         if (!data.articles || !Array.isArray(data.articles)) {
             console.error("No articles found in API response");
             return;
         }
+
         bindData(data.articles);
     } catch (error) {
         console.error("Error fetching news:", error);
@@ -152,3 +156,4 @@ searchButton.addEventListener("click", () => {
     if (curSelectedNav) curSelectedNav.classList.remove("active");
     curSelectedNav = null;
 });
+
