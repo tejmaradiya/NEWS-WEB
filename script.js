@@ -71,7 +71,7 @@
 
 
 
-const API_KEY = "39a2a00fe046403f86b8c9fe74b53cf3";
+const API_KEY = '39a2a00fe046403f86b8c9fe74b53cf3';
 const url = "https://newsapi.org/v2/everything?q=";
 
 window.addEventListener("load", () => fetchNews("India"));
@@ -79,32 +79,6 @@ window.addEventListener("load", () => fetchNews("India"));
 function reload() {
     window.location.reload();
 }
-
-// async function fetchNews(query) {
-//     try {
-//         // Fetching the news
-//         const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
-
-//         // Handle if network request is not okay
-//         if (!res.ok) {
-//             throw new Error("Network response was not ok");
-//         }
-
-//         const data = await res.json();
-
-//         // Check if articles are available
-//         if (!data.articles || data.articles.length === 0) {
-//             console.error("No articles found.");
-//             return;
-//         }
-
-//         // Pass the articles data to bindData function
-//         bindData(data.articles);
-//     } catch (error) {
-//         // Handle fetch error
-//         console.error("Error fetching news:", error);
-//     }
-// }
 async function fetchNews(query) {
     try {
         const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
@@ -156,21 +130,6 @@ function bindData(articles) {
 }
 
 
-// function bindData(articles) {
-//     const cardsContainer = document.getElementById("cards-container");
-//     const newsCardTemplate = document.getElementById("template-news-card");
-
-//     // Clear previous articles
-//     cardsContainer.innerHTML = "";
-
-//     // Loop through each article and bind it to the template
-//     articles.forEach((article) => {
-//         if (!article.urlToImage) return; // Skip articles without image
-//         const cardClone = newsCardTemplate.content.cloneNode(true);
-//         fillDataInCard(cardClone, article);
-//         cardsContainer.appendChild(cardClone);
-//     });
-// }
 
 function fillDataInCard(cardClone, article) {
     const newsImg = cardClone.querySelector("#news-img");
