@@ -80,31 +80,58 @@ function reload() {
     window.location.reload();
 }
 
+// async function fetchNews(query) {
+//     try {
+//         // Fetching the news
+//         const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
+
+//         // Handle if network request is not okay
+//         if (!res.ok) {
+//             throw new Error("Network response was not ok");
+//         }
+
+//         const data = await res.json();
+
+//         // Check if articles are available
+//         if (!data.articles || data.articles.length === 0) {
+//             console.error("No articles found.");
+//             return;
+//         }
+
+//         // Pass the articles data to bindData function
+//         bindData(data.articles);
+//     } catch (error) {
+//         // Handle fetch error
+//         console.error("Error fetching news:", error);
+//     }
+// }
 async function fetchNews(query) {
     try {
-        // Fetching the news
         const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
-
-        // Handle if network request is not okay
+        
+        // Check if the API call was successful
         if (!res.ok) {
-            throw new Error("Network response was not ok");
-        }
-
-        const data = await res.json();
-
-        // Check if articles are available
-        if (!data.articles || data.articles.length === 0) {
-            console.error("No articles found.");
+            console.error("Failed to fetch data from News API:", res.status, res.statusText);
             return;
         }
 
-        // Pass the articles data to bindData function
-        bindData(data.articles);
+        const data = await res.json();
+        
+        // Log the entire data response to inspect it
+        console.log("API Response:", data);
+
+        // Check if the articles array exists and is not empty
+        if (data && Array.isArray(data.articles) && data.articles.length > 0) {
+            bindData(data.articles);
+        } else {
+            console.error("No articles found in the API response.");
+        }
     } catch (error) {
-        // Handle fetch error
+        // Log any errors that occur during the fetch process
         console.error("Error fetching news:", error);
     }
 }
+
 function bindData(articles) {
     const cardsContainer = document.getElementById("cards-container");
     const newsCardTemplate = document.getElementById("template-news-card");
